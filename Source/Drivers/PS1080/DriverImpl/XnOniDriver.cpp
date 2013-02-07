@@ -54,8 +54,10 @@ OniStatus XnOniDriver::initialize(oni::driver::DeviceConnectedCallback deviceCon
 		return (nRetVal);
 	}
 
-	xnLogSetMaskMinSeverity(XN_LOG_MASK_ALL, XN_LOG_VERBOSE);
-	m_writer.Register();
+    xnLogSetMaskMinSeverity(XN_LOG_MASK_ALL, XN_LOG_VERBOSE);
+
+    // Enabling this will trigger a stack overflow at startup on macosx 10.8.
+    //m_writer.Register();
 
 	XnStatus rc = XnDeviceEnumeration::ConnectedEvent().Register(OnDeviceConnected, this, m_connectedEventHandle);
 	if (rc != XN_STATUS_OK)
