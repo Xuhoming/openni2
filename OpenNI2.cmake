@@ -37,7 +37,7 @@ append(OpenNI2_LIBS
 
 build_shared_library(OpenNI2)
 
+install(DIRECTORY Include/ DESTINATION include/OpenNI2)
 install(TARGETS OpenNI2 XnLib EXPORT OpenNI2-exports DESTINATION lib)
-install(FILES ${OpenNI2_HEADERS} DESTINATION include)
 install(FILES OpenNI2-config.cmake DESTINATION share/OpenNI2)
 install(EXPORT OpenNI2-exports DESTINATION share/OpenNI2)
