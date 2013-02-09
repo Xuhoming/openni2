@@ -5,7 +5,12 @@ macro(build_openni2_sample target)
         ThirdParty/PSCommon/XnLib/Include
         ThirdParty/GL
     )
-    append(${target}_LIBS OpenNI2)
+    append(${target}_LIBS
+        OpenNI2
+        ${OPENGL_gl_LIBRARY}
+        ${OPENGL_glu_LIBRARY}
+        ${GLUT_glut_LIBRARY}
+    )
     build_executable(${target})
     install(TARGETS ${target} DESTINATION bin)
 endmacro()

@@ -28,16 +28,19 @@ append(OpenNI2_SOURCES
 )
 
 append(OpenNI2_LIBS
-    ${OPENGL_gl_LIBRARY}
-    ${OPENGL_glu_LIBRARY}
-    ${GLUT_glut_LIBRARY}
     XnLib
     jpeg
 )
 
 build_shared_library(OpenNI2)
 
+set_property(TARGET OpenNI2 PROPERTY LINK_INTERFACE_LIBRARIES "")
+
 install(DIRECTORY Include/ DESTINATION include/OpenNI2)
-install(TARGETS OpenNI2 XnLib EXPORT OpenNI2-exports DESTINATION lib)
+install(TARGETS
+    OpenNI2
+#    XnLib
+    EXPORT OpenNI2-exports DESTINATION lib
+)
 install(FILES OpenNI2-config.cmake DESTINATION share/OpenNI2)
 install(EXPORT OpenNI2-exports DESTINATION share/OpenNI2)
