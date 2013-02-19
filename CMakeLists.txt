@@ -6,8 +6,6 @@ project(OpenNI2)
 
 find_package(jpeg REQUIRED NO_MODULE)
 find_package(usb REQUIRED)
-find_package(OpenGL REQUIRED)
-find_package(GLUT REQUIRED)
 
 if(LINUX AND M64)
     add_compile_flags("-fPIC")

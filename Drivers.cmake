@@ -13,17 +13,26 @@ macro(build_openni2_device target)
 endmacro()
 
 if(WINDOWS)
-    target(Kinect)
-    append(Kinect_SOURCES
-        Source/Drivers/Kinect/BaseKinectStream.cpp
-        Source/Drivers/Kinect/ColorKinectStream.cpp
-        Source/Drivers/Kinect/DepthKinectStream.cpp
-        Source/Drivers/Kinect/IRKinectStream.cpp
-        Source/Drivers/Kinect/KinectDevice.cpp
-        Source/Drivers/Kinect/KinectDriver.cpp
-        Source/Drivers/Kinect/KinectStreamImpl.cpp
-    )
-    build_openni2_device(Kinect)
+    set(KINECTSDK_DIR $ENV{KINECTSDK10_DIR} CACHE PATH "Kinect SDK Directory")
+    if(KINECTSDK_DIR)
+        append(Kinect_INCLUDES "${KINECTSDK_DIR}/inc")
+        if(M64)
+            append(Kinect_LIBS "${KINECTSDK_DIR}/lib/amd64/Kinect10.lib")
+        else()
+            append(Kinect_LIBS "${KINECTSDK_DIR}/lib/x86/Kinect10.lib")
+        endif()
+        target(Kinect)
+        append(Kinect_SOURCES
+            Source/Drivers/Kinect/BaseKinectStream.cpp
+            Source/Drivers/Kinect/ColorKinectStream.cpp
+            Source/Drivers/Kinect/DepthKinectStream.cpp
+            Source/Drivers/Kinect/IRKinectStream.cpp
+            Source/Drivers/Kinect/KinectDevice.cpp
+            Source/Drivers/Kinect/KinectDriver.cpp
+            Source/Drivers/Kinect/KinectStreamImpl.cpp
+        )
+        build_openni2_device(Kinect)
+    endif()
 endif()
 
 target(DummyDevice)
@@ -151,6 +160,9 @@ append(PS1080_SOURCES
     Source/Drivers/PS1080/Sensor/YUV.cpp
 )
 append(PS1080_LIBS jpeg)
+if(WINDOWS)
+    append(PS1080_LIBS wsock32 setupapi)
+endif()
 build_openni2_device(PS1080)
 
 target(TestDevice)

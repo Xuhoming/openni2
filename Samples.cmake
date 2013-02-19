@@ -1,3 +1,20 @@
+find_package(OpenGL REQUIRED)
+
+
+if(WINDOWS)
+    set(GLUT_ROOT "${CMAKE_CURRENT_LIST_DIR}/ThirdParty/GL")
+    if(M64)
+        set(GLUT_LIB_NAME glut64)
+    else()
+        set(GLUT_LIB_NAME glut32)
+    endif()
+    find_path(GLUT_INCLUDE_DIR NAMES GL/glut.h PATHS ${GLUT_ROOT})
+    find_library(GLUT_glut_LIBRARY NAMES ${GLUT_LIB_NAME} PATHS ${GLUT_ROOT})
+    install(FILES ${GLUT_ROOT}/${GLUT_LIB_NAME}.dll DESTINATION bin)
+endif()
+
+find_package(GLUT REQUIRED)
+
 macro(build_openni2_sample target)
     append(${target}_INCLUDES
         Include
@@ -7,6 +24,7 @@ macro(build_openni2_sample target)
     )
     append(${target}_LIBS
         OpenNI2
+        XnLib
         ${OPENGL_gl_LIBRARY}
         ${OPENGL_glu_LIBRARY}
         ${GLUT_glut_LIBRARY}

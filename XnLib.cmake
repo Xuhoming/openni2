@@ -2,6 +2,10 @@ append(XnLib_INCLUDES
     ThirdParty/PSCommon/XnLib/Include
 )
 
+if(WINDOWS)
+    append(XnLib_INCLUDES ThirdParty/PSCommon/XnLib/Driver/Win32/Build/sys)
+endif()
+
 append(XnLib_SOURCES
     ThirdParty/PSCommon/XnLib/Source/XnDump.cpp
     ThirdParty/PSCommon/XnLib/Source/XnDumpFileWriter.cpp
