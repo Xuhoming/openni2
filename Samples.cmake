@@ -1,6 +1,5 @@
 find_package(OpenGL REQUIRED)
 
-
 if(WINDOWS)
     set(GLUT_ROOT "${CMAKE_CURRENT_LIST_DIR}/ThirdParty/GL")
     if(M64)
@@ -11,9 +10,17 @@ if(WINDOWS)
     find_path(GLUT_INCLUDE_DIR NAMES GL/glut.h PATHS ${GLUT_ROOT})
     find_library(GLUT_glut_LIBRARY NAMES ${GLUT_LIB_NAME} PATHS ${GLUT_ROOT})
     install(FILES ${GLUT_ROOT}/${GLUT_LIB_NAME}.dll DESTINATION bin)
+else()
+    find_package(GLUT REQUIRED)
 endif()
 
-find_package(GLUT REQUIRED)
+set(openni2_samples_LIBS
+    OpenNI2
+    XnLib
+    ${OPENGL_gl_LIBRARY}
+    ${OPENGL_glu_LIBRARY}
+    ${GLUT_glut_LIBRARY}
+)
 
 macro(build_openni2_sample target)
     append(${target}_INCLUDES
@@ -22,13 +29,8 @@ macro(build_openni2_sample target)
         ThirdParty/PSCommon/XnLib/Include
         ThirdParty/GL
     )
-    append(${target}_LIBS
-        OpenNI2
-        XnLib
-        ${OPENGL_gl_LIBRARY}
-        ${OPENGL_glu_LIBRARY}
-        ${GLUT_glut_LIBRARY}
-    )
+    append(${target}_DEFS GLUT_NO_AUTOLINK)
+    append(${target}_LIBS ${openni2_samples_LIBS})
     build_executable(${target})
     install(TARGETS ${target} DESTINATION bin)
 endmacro()
@@ -56,7 +58,7 @@ append(MWClosestPoint_SOURCES
     Samples/MWClosestPoint/MWClosestPoint.cpp
     Samples/MWClosestPoint/MWClosestPoint.h
 )
-append(MWClosestPoint_LIBS OpenNI2)
+append(MWClosestPoint_LIBS ${openni2_samples_LIBS})
 build_shared_library(MWClosestPoint)
 
 target(MWClosestPointApp)
