@@ -40,6 +40,7 @@ install(DIRECTORY Include/ DESTINATION include/OpenNI2)
 install(TARGETS OpenNI2 EXPORT OpenNI2-exports
     RUNTIME DESTINATION bin
     ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
 )
 install(FILES OpenNI2-config.cmake DESTINATION share/OpenNI2)
 install(EXPORT OpenNI2-exports DESTINATION share/OpenNI2)
