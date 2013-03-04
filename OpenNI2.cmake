@@ -34,6 +34,10 @@ append(OpenNI2_LIBS
 
 build_shared_library(OpenNI2)
 
+if(UNIX)
+    set_property(TARGET OpenNI2 PROPERTY COMPILE_FLAGS "-fvisibility=hidden")
+endif()
+
 set_property(TARGET OpenNI2 PROPERTY LINK_INTERFACE_LIBRARIES "")
 
 install(DIRECTORY Include/ DESTINATION include/OpenNI2)
