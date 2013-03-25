@@ -1,3 +1,5 @@
+target(XnLib)
+
 append(XnLib_INCLUDES
     ThirdParty/PSCommon/XnLib/Include
 )
