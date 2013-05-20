@@ -25,8 +25,9 @@
 
 ONI_NAMESPACE_IMPLEMENTATION_BEGIN
 
-Device::Device(DeviceDriver* pDeviceDriver, const DriverHandler& driverHandler, const OniDeviceInfo* pDeviceInfo, xnl::ErrorLogger& errorLogger) : 
+Device::Device(DeviceDriver* pDeviceDriver, const DriverHandler& driverHandler, FrameManager& frameManager, const OniDeviceInfo* pDeviceInfo, xnl::ErrorLogger& errorLogger) : 
 	m_driverHandler(driverHandler),
+	m_frameManager(frameManager),
 	m_errorLogger(errorLogger),
 	m_active(false),
 	m_openCount(0),
@@ -115,7 +116,7 @@ VideoStream* Device::createStream(OniSensorType sensorType)
 		return NULL;
 	}
 
-	VideoStream* pStream = XN_NEW(VideoStream, streamHandle, pSensor, *this, m_driverHandler, m_errorLogger);
+	VideoStream* pStream = XN_NEW(VideoStream, streamHandle, pSensor, *this, m_driverHandler, m_frameManager, m_errorLogger);
 	m_streams.AddLast(pStream);
 
 	if ((sensorType == ONI_SENSOR_DEPTH || sensorType == ONI_SENSOR_COLOR) &&
@@ -152,7 +153,7 @@ void Device::notifyAllProperties()
 {
 	m_driverHandler.deviceNotifyAllProperties(m_deviceHandle);
 }
-OniStatus Device::invoke(int commandId, const void* data, int dataSize)
+OniStatus Device::invoke(int commandId, void* data, int dataSize)
 {
 	if (commandId == ONI_DEVICE_COMMAND_SEEK)
 	{
@@ -235,6 +236,11 @@ void Device::disableDepthColorSync()
 	m_depthColorSyncHandle = NULL;
 	m_pContext = NULL;
 	m_syncEnabled = FALSE;
+}
+
+OniBool Device::isDepthColorSyncEnabled()
+{
+	return m_syncEnabled;
 }
 
 void ONI_CALLBACK_TYPE Device::stream_PropertyChanged(void* /*deviceHandle*/, int /*propertyId*/, const void* /*data*/, int /*dataSize*/, void* pCookie)

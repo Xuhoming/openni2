@@ -94,6 +94,8 @@ const char* getFormatName(openni::PixelFormat format)
 		return "RGB 888";
 	case openni::PIXEL_FORMAT_YUV422:
 		return "YUV 422";
+	case openni::PIXEL_FORMAT_YUYV:
+		return "YUYV";
 	case openni::PIXEL_FORMAT_GRAY8:
 		return "Grayscale 8-bit";
 	case openni::PIXEL_FORMAT_GRAY16:
@@ -351,18 +353,6 @@ void toggleMirror(int )
 	displayMessage ("Mirror: %s", g_depthStream.getMirroringEnabled()?"On":"Off");	
 }
 
-void toggleCMOSAutoLoops(int )
-{
-	if (g_colorStream.getCameraSettings() == NULL)
-	{
-		displayMessage("Color stream doesn't support camera settings");
-		return;
-	}
-	toggleImageAutoExposure(0);
-	toggleImageAutoWhiteBalance(0);
-
-	displayMessage ("CMOS Auto Loops: %s", g_colorStream.getCameraSettings()->getAutoExposureEnabled()?"On":"Off");	
-}
 
 void toggleCloseRange(int )
 {
@@ -639,12 +629,57 @@ void toggleIRMirror(int)
 
 void toggleImageAutoExposure(int)
 {
+	if (g_colorStream.getCameraSettings() == NULL)
+	{
+		displayError("Color stream doesn't support camera settings");
+		return;
+	}
 	g_colorStream.getCameraSettings()->setAutoExposureEnabled(!g_colorStream.getCameraSettings()->getAutoExposureEnabled());
+	displayMessage("Auto Exposure: %s", g_colorStream.getCameraSettings()->getAutoExposureEnabled() ? "ON" : "OFF");
 }
 
 void toggleImageAutoWhiteBalance(int)
 {
+	if (g_colorStream.getCameraSettings() == NULL)
+	{
+		displayError("Color stream doesn't support camera settings");
+		return;
+	}
 	g_colorStream.getCameraSettings()->setAutoWhiteBalanceEnabled(!g_colorStream.getCameraSettings()->getAutoWhiteBalanceEnabled());
+	displayMessage("Auto White balance: %s", g_colorStream.getCameraSettings()->getAutoWhiteBalanceEnabled() ? "ON" : "OFF");
+}
+
+void changeImageExposure(int delta)
+{
+	if (g_colorStream.getCameraSettings() == NULL)
+	{
+		displayError("Color stream doesn't support camera settings");
+		return;
+	}
+	int exposure = g_colorStream.getCameraSettings()->getExposure();
+	openni::Status rc = g_colorStream.getCameraSettings()->setExposure(exposure + delta);
+	if (rc != openni::STATUS_OK)
+	{
+		displayMessage("Can't change exposure");
+		return;
+	}
+	displayMessage("Changed exposure to: %d", g_colorStream.getCameraSettings()->getExposure());
+}
+void changeImageGain(int delta)
+{
+	if (g_colorStream.getCameraSettings() == NULL)
+	{
+		displayError("Color stream doesn't support camera settings");
+		return;
+	}
+	int gain = g_colorStream.getCameraSettings()->getGain();
+	openni::Status rc = g_colorStream.getCameraSettings()->setGain(gain + delta);
+	if (rc != openni::STATUS_OK)
+	{
+		displayMessage("Can't change gain");
+		return;
+	}
+	displayMessage("Changed gain to: %d", g_colorStream.getCameraSettings()->getGain());
 }
 
 void setStreamCropping(openni::VideoStream& stream, int originX, int originY, int width, int height)

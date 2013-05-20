@@ -131,9 +131,12 @@ ONI_C_API int oniFormatBytesPerPixel(OniPixelFormat format)
 	case ONI_PIXEL_FORMAT_RGB888:
 		return 3;
 	case ONI_PIXEL_FORMAT_YUV422:
+	case ONI_PIXEL_FORMAT_YUYV:
 		return 2;
 	case ONI_PIXEL_FORMAT_JPEG:
+		return 1;
 	default:
+		XN_ASSERT(FALSE);
 		return 0;
 	}
 }
@@ -186,6 +189,11 @@ ONI_C_API void oniDeviceDisableDepthColorSync(OniDeviceHandle device)
 	g_Context.clearErrorLogger();
 	device->pDevice->disableDepthColorSync();
 }
+ONI_C_API OniBool oniDeviceGetDepthColorSyncEnabled(OniDeviceHandle device)
+{
+	g_Context.clearErrorLogger();
+	return device->pDevice->isDepthColorSyncEnabled();
+}
 
 ONI_C_API OniStatus oniDeviceSetProperty(OniDeviceHandle device, int propertyId, const void* data, int dataSize)
 {
@@ -202,7 +210,7 @@ ONI_C_API OniBool oniDeviceIsPropertySupported(OniDeviceHandle device, int prope
 	g_Context.clearErrorLogger();
 	return device->pDevice->isPropertySupported(propertyId);
 }
-ONI_C_API OniStatus oniDeviceInvoke(OniDeviceHandle device, int commandId, const void* data, int dataSize)
+ONI_C_API OniStatus oniDeviceInvoke(OniDeviceHandle device, int commandId, void* data, int dataSize)
 {
 	g_Context.clearErrorLogger();
 	return device->pDevice->invoke(commandId, data, dataSize);
@@ -327,7 +335,7 @@ ONI_C_API OniBool oniStreamIsPropertySupported(OniStreamHandle stream, int prope
 	return stream->pStream->isPropertySupported(propertyId);
 }
 
-ONI_C_API OniStatus oniStreamInvoke(OniStreamHandle stream, int commandId, const void* data, int dataSize)
+ONI_C_API OniStatus oniStreamInvoke(OniStreamHandle stream, int commandId, void* data, int dataSize)
 {
 	g_Context.clearErrorLogger();
 	return stream->pStream->invoke(commandId, data, dataSize);
@@ -336,6 +344,12 @@ ONI_C_API OniBool oniStreamIsCommandSupported(OniStreamHandle stream, int comman
 {
 	g_Context.clearErrorLogger();
 	return stream->pStream->isCommandSupported(commandId);
+}
+
+ONI_C_API OniStatus oniStreamSetFrameBuffersAllocator(OniStreamHandle stream, OniFrameAllocBufferCallback alloc, OniFrameFreeBufferCallback free, void* pCookie)
+{
+	g_Context.clearErrorLogger();
+	return stream->pStream->setFrameBufferAllocator(alloc, free, pCookie);	
 }
 
 ////

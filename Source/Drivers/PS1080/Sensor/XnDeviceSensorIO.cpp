@@ -49,10 +49,9 @@ XnSensorIO::~XnSensorIO()
 {
 }
 
-XnStatus XnSensorIO::OpenDevice(const XnChar* strPath, XnBool bLeanInit)
+XnStatus XnSensorIO::OpenDevice(const XnChar* strPath)
 {
 	XnStatus nRetVal;
-	XnUSBDeviceSpeed DevSpeed;
 
 	xnLogVerbose(XN_MASK_DEVICE_IO, "Connecting to USB device...");
 
@@ -60,17 +59,6 @@ XnStatus XnSensorIO::OpenDevice(const XnChar* strPath, XnBool bLeanInit)
 	xnLogVerbose(XN_MASK_DEVICE_IO, "Trying to open sensor '%s'...", strPath);
 	nRetVal = xnUSBOpenDeviceByPath(strPath, &m_pSensorHandle->USBDevice);
 	XN_IS_STATUS_OK(nRetVal);
-
-	if (!bLeanInit)
-	{
-		nRetVal = xnUSBGetDeviceSpeed(m_pSensorHandle->USBDevice, &DevSpeed);
-		XN_IS_STATUS_OK(nRetVal);
-
-		if (DevSpeed != XN_USB_DEVICE_HIGH_SPEED)
-		{
-			XN_LOG_WARNING_RETURN(XN_STATUS_USB_UNKNOWN_DEVICE_SPEED, XN_MASK_DEVICE_IO, "Device is not high speed!");
-		}
-	}
 
 	// on older firmwares, control was sent over BULK endpoints. Check if this is the case
 	xnLogVerbose(XN_MASK_DEVICE_IO, "Trying to open endpoint 0x4 for control out (for old firmwares)...");

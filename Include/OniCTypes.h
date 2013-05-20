@@ -120,6 +120,9 @@ typedef void (ONI_CALLBACK_TYPE* OniGeneralCallback)(void* pCookie);
 typedef void (ONI_CALLBACK_TYPE* OniDeviceInfoCallback)(const OniDeviceInfo* pInfo, void* pCookie);
 typedef void (ONI_CALLBACK_TYPE* OniDeviceStateCallback)(const OniDeviceInfo* pInfo, OniDeviceState deviceState, void* pCookie);
 
+typedef void* (ONI_CALLBACK_TYPE* OniFrameAllocBufferCallback)(int size, void* pCookie);
+typedef void (ONI_CALLBACK_TYPE* OniFrameFreeBufferCallback)(void* data, void* pCookie);
+
 typedef struct
 {
 	OniDeviceInfoCallback		deviceConnected;
@@ -143,9 +146,14 @@ Pixel type used to store depth images.
 typedef uint16_t OniDepthPixel;
 
 /**
-Pixel type used to store IR images.
+Pixel type used to store 16-bit grayscale images
 */
 typedef uint16_t OniGrayscale16Pixel;
+
+/**
+Pixel type used to store 8-bit grayscale/bayer images
+*/
+typedef uint8_t OniGrayscale8Pixel;
 
 #pragma pack (push, 1)
 
