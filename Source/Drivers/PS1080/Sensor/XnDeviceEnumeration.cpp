@@ -98,15 +98,17 @@ void XnDeviceEnumeration::Shutdown()
 		{
 			xnUSBUnregisterFromConnectivityEvents(ms_aRegistrationHandles[i]);
 		}
-		ms_aRegistrationHandles.Clear();
-		ms_connectedEvent.Clear();
-		ms_disconnectedEvent.Clear();
+		// FIXME: ManCTL: crashes on exit with this on Mac.
+		// ms_aRegistrationHandles.Clear();
+		// ms_connectedEvent.Clear();
+		// ms_disconnectedEvent.Clear();
 
 		xnOSCloseCriticalSection(&ms_lock);
 
 		xnUSBShutdown();
 
-		ms_devices.Clear();
+		// FIXME: ManCTL: crashes on exit with this on Mac.
+		// ms_devices.Clear();
 
 		ms_initialized = FALSE;
 	}
