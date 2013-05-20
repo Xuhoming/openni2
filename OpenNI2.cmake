@@ -21,7 +21,6 @@ append(OpenNI2_SOURCES
     Source/Core/OniDriverHandler.cpp
     Source/Core/OniFrameManager.cpp
     Source/Core/OniRecorder.cpp
-    Source/Core/OniSensor.cpp
     Source/Core/OniStream.cpp
     Source/Core/OniStreamFrameHolder.cpp
     Source/Core/OniSyncedStreamsFrameHolder.cpp
