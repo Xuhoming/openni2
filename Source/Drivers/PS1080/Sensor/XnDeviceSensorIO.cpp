@@ -76,6 +76,19 @@ XnStatus XnSensorIO::OpenDevice(const XnChar* strPath)
 
 	xnLogInfo(XN_MASK_DEVICE_IO, "Connected to USB device%s", m_bIsLowBandwidth ? " (LowBand)" : "");
 
+    // check if we're currently on BULK interfaces or ISO ones
+    XN_USB_EP_HANDLE hEP;
+    nRetVal = xnUSBOpenEndPoint(m_pSensorHandle->USBDevice, 0x82, XN_USB_EP_BULK, XN_USB_DIRECTION_IN, &hEP);
+    if (nRetVal == XN_STATUS_USB_WRONG_ENDPOINT_TYPE)
+    {
+        m_interface = XN_SENSOR_USB_INTERFACE_ISO_ENDPOINTS;
+    }
+    else
+    {
+        m_interface = XN_SENSOR_USB_INTERFACE_BULK_ENDPOINTS;
+        xnUSBCloseEndPoint(hEP);
+    }
+
 	strcpy(m_strDeviceName, strPath);
 
 	return XN_STATUS_OK;

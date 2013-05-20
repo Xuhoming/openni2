@@ -167,7 +167,7 @@ XnStatus XnHostProtocolUpdateSupportedImageModes(XnDevicePrivateData* pDevicePri
 		XN_IS_STATUS_OK(nRetVal);
 	}
 	else
-	{
+    {
         if (pDevicePrivateData->pSensor->GetCurrentUsbInterface() == XN_SENSOR_USB_INTERFACE_BULK_ENDPOINTS)
         {
             nRetVal = pDevicePrivateData->FWInfo.imageModes.SetData(pDevicePrivateData->FWInfo._imageBulkModes.GetData(), pDevicePrivateData->FWInfo._imageBulkModes.GetSize());
@@ -182,8 +182,8 @@ XnStatus XnHostProtocolUpdateSupportedImageModes(XnDevicePrivateData* pDevicePri
         {
             xnLogError(XN_MASK_DEVICE_SENSOR, "Device does not support getting presets!");
             XN_ASSERT(FALSE);
+            return XN_STATUS_ERROR;
         }
-		return XN_STATUS_ERROR;
 	}
 
 	return (XN_STATUS_OK);
