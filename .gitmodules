@@ -1,6 +1,3 @@
-[submodule "ThirdParty/PSCommon"]
-	path = ThirdParty/PSCommon
-	url = ssh://git/localhome/GIT/Software/Common/PSCommon.git
 [submodule "remake"]
 	path = remake
 	url = git://github.com/manctl/remake

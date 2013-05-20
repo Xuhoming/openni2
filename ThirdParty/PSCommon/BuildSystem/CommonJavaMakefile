@@ -37,7 +37,7 @@ JAR_OPTIONS = -cf
 
 ifneq (, $(if $(or $(MAIN_CLASS), $(USED_JARS)),1))
 	JAR_OPTIONS = -cfm
-	MANIFEST_FILE = Manifest.txt
+	MANIFEST_FILE = $(INT_DIR)/Manifest.txt
 	JAR_MANIFEST_CREATE_COMMAND = (
 	ifneq (,$(MAIN_CLASS))
 		JAR_MANIFEST_CREATE_COMMAND += echo "Main-Class: $(MAIN_CLASS)";
@@ -51,7 +51,7 @@ endif
 CREATE_SHORTCUT = 
 ifneq (, $(MAIN_CLASS))
 	SHORTCUT = $(OUT_DIR)/$(JAR_NAME)
-	CREATE_SHORTCUT = echo java -jar $(OUTPUT_NAME) > $(SHORTCUT); chmod +x $(SHORTCUT)
+	CREATE_SHORTCUT = echo LD_LIBRARY_PATH=. java -Djava.library.path=. -jar $(OUTPUT_NAME) > $(SHORTCUT); chmod +x $(SHORTCUT)
 endif
 
 #############################################################################
