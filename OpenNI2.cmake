@@ -10,6 +10,7 @@ append(OpenNI2_INCLUDES
     Source/Drivers/PS1080/Core
     Source/Drivers/PS1080
     ThirdParty/GL
+    Source/DepthUtils
 )
 
 append(OpenNI2_SOURCES
@@ -18,11 +19,16 @@ append(OpenNI2_SOURCES
     Source/Core/OniDevice.cpp
     Source/Core/OniDeviceDriver.cpp
     Source/Core/OniDriverHandler.cpp
+    Source/Core/OniFrameManager.cpp
     Source/Core/OniRecorder.cpp
+    Source/Core/OniSensor.cpp
     Source/Core/OniStream.cpp
     Source/Core/OniStreamFrameHolder.cpp
     Source/Core/OniSyncedStreamsFrameHolder.cpp
     Source/Core/OpenNI.cpp
+
+    Source/DepthUtils/DepthUtils.cpp
+    Source/DepthUtils/DepthUtilsImpl.cpp
 
     Source/Drivers/OniFile/Formats/XnStreamCompression.cpp
 )

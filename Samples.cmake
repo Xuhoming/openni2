@@ -35,6 +35,8 @@ macro(build_openni2_sample target)
     install(TARGETS ${target} DESTINATION bin)
 endmacro()
 
+INCLUDE_DIRECTORIES(Samples/common)
+
 # Samples/Common/OniSampleUtilities.h
 
 target(NiViewer)

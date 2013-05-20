@@ -58,6 +58,7 @@ target(PS1080)
 append(PS1080_INCLUDES
     Source/Drivers/PS1080/Include
     Source/Drivers/PS1080
+    Source/DepthUtils
 )
 append(PS1080_SOURCES
     Source/Drivers/PS1080/Core/XnBuffer.cpp
@@ -108,9 +109,6 @@ append(PS1080_SOURCES
     Source/Drivers/PS1080/Formats/XnFormatsStatus.cpp
     Source/Drivers/PS1080/Formats/XnStreamCompression.cpp
     Source/Drivers/PS1080/Sensor/Bayer.cpp
-    Source/Drivers/PS1080/Sensor/GMC.cpp
-    Source/Drivers/PS1080/Sensor/LinAlg.cpp
-    Source/Drivers/PS1080/Sensor/Registration.cpp
     Source/Drivers/PS1080/Sensor/Uncomp.cpp
     Source/Drivers/PS1080/Sensor/XnAudioProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnBayerImageProcessor.cpp
@@ -128,7 +126,6 @@ append(PS1080_SOURCES
     Source/Drivers/PS1080/Sensor/XnFrameStreamProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnGeneralDebugProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnGMCDebugProcessor.cpp
-    Source/Drivers/PS1080/Sensor/XnGMCProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnHostProtocol.cpp
     Source/Drivers/PS1080/Sensor/XnImageProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnIRProcessor.cpp
@@ -137,6 +134,7 @@ append(PS1080_SOURCES
     Source/Drivers/PS1080/Sensor/XnNesaDebugProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnPacked11DepthProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnPacked12DepthProcessor.cpp
+    Source/Drivers/PS1080/Sensor/XnPassThroughImageProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnPSCompressedDepthProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnPSCompressedImageProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnSensor.cpp
@@ -153,11 +151,14 @@ append(PS1080_SOURCES
     Source/Drivers/PS1080/Sensor/XnTecDebugProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnUncompressedBayerProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnUncompressedDepthProcessor.cpp
-    Source/Drivers/PS1080/Sensor/XnUncompressedYUVImageProcessor.cpp
-    Source/Drivers/PS1080/Sensor/XnUncompressedYUVtoRGBImageProcessor.cpp
+    Source/Drivers/PS1080/Sensor/XnUncompressedYUYVtoRGBImageProcessor.cpp
+    Source/Drivers/PS1080/Sensor/XnUncompressedYUV422toRGBImageProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnWavelengthCorrectionDebugProcessor.cpp
     Source/Drivers/PS1080/Sensor/XnWholePacketProcessor.cpp
     Source/Drivers/PS1080/Sensor/YUV.cpp
+
+    Source/DepthUtils/DepthUtils.cpp
+    Source/DepthUtils/DepthUtilsImpl.cpp
 )
 append(PS1080_LIBS jpeg)
 if(WINDOWS)
