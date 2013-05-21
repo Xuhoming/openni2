@@ -11,6 +11,10 @@ if(LINUX AND M64)
     add_compile_flags("-fPIC")
 endif()
 
+if (UNIX)
+   add_compile_flags("-msse3")
+endif ()
+
 # These definitions are meant for the third-party GL stuff.
 if(WINDOWS)
     add_definitions(-DWIN32)
