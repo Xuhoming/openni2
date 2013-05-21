@@ -9,7 +9,7 @@ macro(build_openni2_device target)
         set_property(TARGET ${target} PROPERTY SUFFIX .dylib)
     endif()
     # lipo ${input} -create -output ${output}
-    install(TARGETS ${target} DESTINATION bin/OpenNI2/Drivers)
+    install(TARGETS ${target} DESTINATION lib/OpenNI2/Drivers)
 endmacro()
 
 if(WINDOWS)
