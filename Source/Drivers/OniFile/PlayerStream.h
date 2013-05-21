@@ -67,6 +67,8 @@ public:
     /// Initialize the stream object.
     OniStatus Initialize();
 
+	virtual int getRequiredFrameSize();
+	
     /// @copydoc OniStreamBase::start()
     virtual OniStatus start();
 
@@ -75,9 +77,6 @@ public:
 
     /// @copydoc OniStreamBase::stop()
     virtual void stop();
-
-	// Return whether the stream is ready to receive data.
-	OniBool IsReadyForData();
 
 	// Return the player source the stream was created on.
 	PlayerSource* GetSource();
@@ -118,9 +117,6 @@ private:
 	// Stream properties.
     PlayerProperties m_properties;
 
-	// Pointer to last received frame.
-	OniFrame* m_pLastFrame;
-
 	// Handle to new data callback.
 	OniCallbackHandle m_newDataHandle;
 
@@ -135,6 +131,8 @@ private:
 
 	// Are we streaming right now?
 	bool m_isStarted;
+
+	int m_requiredFrameSize;
 };
 
 } // namespace oni_files_player

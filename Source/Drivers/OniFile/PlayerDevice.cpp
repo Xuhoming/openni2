@@ -776,6 +776,10 @@ XnStatus XN_CALLBACK_TYPE PlayerDevice::OnNodeIntPropChanged(void* pCookie, cons
 				nRetVal = XN_STATUS_ERROR;
 			}
 		}
+		else if (strcmp(strPropName, XN_PROP_ONI_REQUIRED_FRAME_SIZE) == 0 || strcmp(strPropName, "RequiredDataSize") == 0)
+		{
+			pSource->SetRequiredFrameSize((int)nValue);
+		}
 		else
 		{
 			nRetVal = pThis->AddPrivateProperty(pSource, strPropName, sizeof(nValue), &nValue);
@@ -984,10 +988,7 @@ XnStatus XN_CALLBACK_TYPE PlayerDevice::OnNodeNewData(void* pCookie, const XnCha
 				if (pStream->GetSource() == pSource)
 				{
 					hasStreams = TRUE;
-					if (pStream->IsReadyForData())
-					{
-						ready = TRUE;
-					}
+					ready = TRUE;
 					break;
 				}
 			}

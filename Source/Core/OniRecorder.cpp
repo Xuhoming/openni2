@@ -612,7 +612,8 @@ XnPixelFormat toXnPixelFormat(OniPixelFormat oniFormat)
     case ONI_PIXEL_FORMAT_GRAY16:		return XN_PIXEL_FORMAT_GRAYSCALE_16_BIT;
     case ONI_PIXEL_FORMAT_JPEG:		return XN_PIXEL_FORMAT_MJPEG;
     
-    default: //should not happen
+    default: 
+		//not supported by OpenNI 1.x
         return XnPixelFormat(0);
     }
 }
@@ -715,6 +716,15 @@ void Recorder::onAttach(XnUInt32 nodeId, VideoStream* pStream)
         ))
     undoPoint.Reuse();
 
+	// required data size (for cases where data is larger than video mode)
+	EMIT(RECORD_INT_PROPERTY(
+		nodeId,
+		getLastPropertyRecordPos(nodeId, "oniRequiredFrameSize", undoPoint.GetPosition()),
+		"oniRequiredFrameSize",
+		pStream->getRequiredFrameSize()
+		));
+	undoPoint.Reuse();
+
 	// isGenerating (needed for OpenNI 1.x playback)
 	EMIT(RECORD_INT_PROPERTY(
 		nodeId,
@@ -766,18 +776,6 @@ void Recorder::onAttach(XnUInt32 nodeId, VideoStream* pStream)
         ))
     undoPoint.Reuse();
 
-    // xnSupportedPixelFormats
-    XnSupportedPixelFormats supportedPixelFormats;
-    fillXnSupportedPixelFormats(supportedPixelFormats, curVideoMode.pixelFormat);
-    EMIT(RECORD_GENERAL_PROPERTY(
-            nodeId,
-            getLastPropertyRecordPos(nodeId, "xnSupportedPixelFormats", undoPoint.GetPosition()),
-            "xnSupportedPixelFormats",
-            &supportedPixelFormats,
-            sizeof(supportedPixelFormats)
-        ))
-    undoPoint.Reuse();
-
     // xnMapOutputMode
     VideoModeData curVMD;
     curVMD.width  = curVideoMode.resolutionX;
@@ -792,14 +790,30 @@ void Recorder::onAttach(XnUInt32 nodeId, VideoStream* pStream)
         ))
     undoPoint.Reuse();
 
-    // xnPixelFormat
-    EMIT(RECORD_INT_PROPERTY(
-            nodeId,
-            getLastPropertyRecordPos(nodeId, "xnPixelFormat", undoPoint.GetPosition()),
-            "xnPixelFormat",
-            toXnPixelFormat(curVideoMode.pixelFormat)
-        ))
-    undoPoint.Reuse();
+	XnPixelFormat pixelFormat = toXnPixelFormat(curVideoMode.pixelFormat);
+	if (pixelFormat != 0)
+	{
+		// xnSupportedPixelFormats
+		XnSupportedPixelFormats supportedPixelFormats;
+		fillXnSupportedPixelFormats(supportedPixelFormats, curVideoMode.pixelFormat);
+		EMIT(RECORD_GENERAL_PROPERTY(
+			nodeId,
+			getLastPropertyRecordPos(nodeId, "xnSupportedPixelFormats", undoPoint.GetPosition()),
+			"xnSupportedPixelFormats",
+			&supportedPixelFormats,
+			sizeof(supportedPixelFormats)
+			))
+			undoPoint.Reuse();
+
+		// xnPixelFormat
+		EMIT(RECORD_INT_PROPERTY(
+			nodeId,
+			getLastPropertyRecordPos(nodeId, "xnPixelFormat", undoPoint.GetPosition()),
+			"xnPixelFormat",
+			pixelFormat
+			))
+			undoPoint.Reuse();
+	}
 
 	EMIT(RECORD_INT_PROPERTY(
 		nodeId,
